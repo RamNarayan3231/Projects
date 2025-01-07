@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scan Results</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 max-w-lg w-full">
+        <h1 class="text-2xl font-bold mb-6 text-center">Scan Results</h1>
+        
+        {% if error %}
+            <!-- Error Message -->
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6" role="alert">
+                <strong class="font-bold">Error:</strong>
+                <span class="block sm:inline">{{ error }}</span>
+            </div>
+        {% else %}
+            <!-- Sensitive Data Section -->
+            <div>
+                <h2 class="text-xl font-semibold mb-4">Sensitive Data</h2>
+                <ul class="list-disc list-inside space-y-2">
+                    {% if sensitive_data %}
+                        {% for key, values in sensitive_data.items() %}
+                            {% if values %}
+                                <li class="text-gray-700">
+                                    <span class="font-bold">{{ key.capitalize() }}</span>: 
+                                    {{ values | join(", ") }}
+                                </li>
+                            {% else %}
+                                <li class="text-gray-700">No {{ key }} detected.</li>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <li class="text-gray-700">No sensitive data found.</li>
+                    {% endif %}
+                </ul>
+            </div>
+            
+            <!-- Non-Sensitive Data Section -->
+            <div class="mt-6">
+                <h2 class="text-xl font-semibold mb-4">Non-Sensitive Data</h2>
+                <p class="text-gray-700 whitespace-pre-wrap">{{ non_sensitive_data }}</p>
+            </div>
+        {% endif %}
+        
+        <!-- Navigation Link -->
+        <div class="mt-8 text-center">
+            <a href="/" 
+               class="text-blue-500 hover:underline">Go Back</a>
+        </div>
+    </div>
+</body>
+</html>
